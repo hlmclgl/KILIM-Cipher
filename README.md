@@ -91,6 +91,8 @@ print(f"Decrypted: {decrypted}")
 assert plaintext == decrypted
 ```
 
+---
+
 ## 🧪 Scientific Validation (NIST & Dieharder)
 To validate the statistical randomness claims made in the paper, we provide scripts to generate large binary datasets suitable for the Dieharder and NIST STS test suites.
 
@@ -106,8 +108,12 @@ python generate_nist_large.py
 dieharder -a -g 201 -f nist_large_750MB.bin
 ```
 
+---
+
 ## ⚠️ Disclaimer
 This software is a research prototype developed to demonstrate the feasibility of localized probabilistic encryption. While it has passed standard statistical tests, it should be reviewed thoroughly by security experts before being used in production environments for critical security applications.
+
+---
 
 ## 📜 License
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/hlmclgl/KILIM-Cipher/blob/main/LICENSE) file for details.
