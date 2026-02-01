@@ -1,6 +1,7 @@
 # KILIM-Cipher: Localized Probabilistic Stream Cipher
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/1147470580.svg)](https://doi.org/10.5281/zenodo.18452264)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Status](https://img.shields.io/badge/Status-Research%20Prototype-orange.svg)]()
 
