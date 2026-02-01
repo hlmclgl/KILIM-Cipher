@@ -1,0 +1,44 @@
+#=============================================================================#
+#            dieharder version 3.31.1 Copyright 2003 Robert G. Brown          #
+#=============================================================================#
+   rng_name    |           filename             |rands/second|
+ file_input_raw|            nist_large_750MB.bin|  5.47e+07  |
+#=============================================================================#
+        test_name   |ntup| tsamples |psamples|  p-value |Assessment
+#=============================================================================#
+   diehard_birthdays|   0|       100|     100|0.36258180|  PASSED
+      diehard_operm5|   0|   1000000|     100|0.00000283|   WEAK
+  diehard_rank_32x32|   0|     40000|     100|0.11908330|  PASSED
+    diehard_rank_6x8|   0|    100000|     100|0.08193472|  PASSED
+   diehard_bitstream|   0|   2097152|     100|0.91538960|  PASSED
+        diehard_opso|   0|   2097152|     100|0.21248369|  PASSED
+        diehard_oqso|   0|   2097152|     100|0.16492703|  PASSED
+         diehard_dna|   0|   2097152|     100|0.06182794|  PASSED
+diehard_count_1s_str|   0|    256000|     100|0.81027845|  PASSED
+diehard_count_1s_byt|   0|    256000|     100|0.42739716|  PASSED
+ diehard_parking_lot|   0|     12000|     100|0.00000136|   WEAK
+    diehard_2dsphere|   2|      8000|     100|0.08811298|  PASSED
+    diehard_3dsphere|   3|      4000|     100|0.96378306|  PASSED
+     diehard_squeeze|   0|    100000|     100|0.19073810|  PASSED
+        diehard_sums|   0|       100|     100|0.32202957|  PASSED
+        diehard_runs|   0|    100000|     100|0.06933068|  PASSED
+        diehard_runs|   0|    100000|     100|0.91310658|  PASSED
+       diehard_craps|   0|    200000|     100|0.57355860|  PASSED
+         sts_monobit|   1|    100000|     100|0.54315786|  PASSED
+            sts_runs|   2|    100000|     100|0.61839462|  PASSED
+         rgb_bitdist|   1|    100000|     100|0.17058439|  PASSED
+         rgb_bitdist|   2|    100000|     100|0.49161837|  PASSED
+         rgb_bitdist|   3|    100000|     100|0.29738461|  PASSED
+         rgb_bitdist|   4|    100000|     100|0.73495184|  PASSED
+	 rgb_bitdist|   5|    100000|     100|0.37051409|  PASSED
+         rgb_bitdist|   6|    100000|     100|0.59120490|  PASSED
+         rgb_bitdist|   7|    100000|     100|0.69034966|  PASSED
+         rgb_bitdist|   8|    100000|     100|0.27495208|  PASSED
+rgb_minimum_distance|   2|     10000|    1000|0.00004712|   WEAK
+rgb_minimum_distance|   3|     10000|    1000|0.72860873|  PASSED
+rgb_minimum_distance|   4|     10000|    1000|0.16284025|  PASSED
+rgb_minimum_distance|   5|     10000|    1000|0.24390321|  PASSED
+    rgb_permutations|   2|    100000|     100|0.27091644|  PASSED
+    rgb_permutations|   3|    100000|     100|0.11744633|  PASSED
+    rgb_permutations|   4|    100000|     100|0.00352119|   WEAK
+    rgb_permutations|   5|    100000|     100|0.87383206|  PASSED
