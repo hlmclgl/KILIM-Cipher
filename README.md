@@ -110,4 +110,4 @@ dieharder -a -g 201 -f nist_large_750MB.bin
 This software is a research prototype developed to demonstrate the feasibility of localized probabilistic encryption. While it has passed standard statistical tests, it should be reviewed thoroughly by security experts before being used in production environments for critical security applications.
 
 ## 📜 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/hlmclgl/KILIM-Cipher/blob/main/LICENSE) file for details.
