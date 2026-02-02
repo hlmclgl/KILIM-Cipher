@@ -174,6 +174,8 @@ sample size = 100 binary sequences.
 For further details, see [RESULTS](https://github.com/hlmclgl/KILIM-Cipher/tree/main/results)
 </details>
 
+---
+
 ## ⚠️ Disclaimer
 This software is a research prototype developed to demonstrate the feasibility of localized probabilistic encryption. While it has passed standard statistical tests, it should be reviewed thoroughly by security experts before being used in production environments for critical security applications.
 
