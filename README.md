@@ -141,6 +141,39 @@ dieharder -a -g 201 -f nist_large_750MB.bin
 
 ---
 
+### 🛡️ Summary of Results
+The algorithm passed **all 15 tests** in the NIST Statistical Test Suite (STS 2.1.2) and the **Dieharder** battery of tests with a significance level of $\alpha = 0.01$.
+
+| Test Suite | Result | Key Metrics (P-Values) |
+| :--- | :--- | :--- |
+| **NIST STS (15/15)** | **✅ PASSED** | Monobit: `0.5431` \| Runs: `0.6183` \| FFT: `0.7399` |
+| **Dieharder** | **✅ PASSED** | DNA: `0.0618` \| Birthdays: `0.3625` \| Bitstream: `0.9153` |
+
+<details>
+<summary><b>🔍 Click to see NIST Test Log Snippet</b></summary>
+
+```text
+------------------------------------------------------------------------------
+RESULTS FOR THE UNIFORMITY OF P-VALUES AND THE PROPORTION OF PASSING SEQUENCES
+------------------------------------------------------------------------------
+   generator is <data/nist_large_output.bin>
+------------------------------------------------------------------------------
+ C1  C2  C3  C4  C5  C6  C7  C8  C9  C10  P-VALUE  PROPORTION  STATISTICAL TEST
+------------------------------------------------------------------------------
+  9   9   8  11  12   8  11   7  12  13  0.534146    100/100     Frequency
+ 12   7  13   9   8  10   8  13  11   9  0.739918    100/100     BlockFrequency
+  8  10  11   9  12   9  11  10  10  10  0.122325    100/100     Runs
+ 10  12   9  10   9  11   8  10  11  10  0.739918    100/100     FFT
+ ...
+------------------------------------------------------------------------------
+```
+The minimum pass rate for each statistical test with the exception of the
+random excursion (variant) test is approximately = 96 for a
+sample size = 100 binary sequences.
+
+For further details, see [RESULTS](https://github.com/hlmclgl/KILIM-Cipher/tree/main/results)
+</details>
+
 ## ⚠️ Disclaimer
 This software is a research prototype developed to demonstrate the feasibility of localized probabilistic encryption. While it has passed standard statistical tests, it should be reviewed thoroughly by security experts before being used in production environments for critical security applications.
 
