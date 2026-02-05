@@ -134,7 +134,7 @@ To ensure reproducibility, we provide both the generation scripts and the static
 
 * **`data/` folder:** Contains sample test vectors (TV_A, TV_B) and generated ciphertext samples for quick verification.
 * **Large Datasets:** Due to GitHub file size limits, the full 750MB binary datasets used for NIST STS and Dieharder tests are archived at Zenodo.
-    * [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18452265.svg)](https://doi.org/10.5281/zenodo.18452265) -> **[Download Full Test Data](https://doi.org/10.5281/zenodo.18452265)**
+    * [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18499496.svg)](https://doi.org/10.5281/zenodo.18499496) -> **[Download Full Test Data](https://doi.org/10.5281/zenodo.18499496)**
 
 > **Note:** You can also generate your own fresh test data using the provided script:
 > ```bash
