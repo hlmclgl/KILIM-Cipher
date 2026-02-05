@@ -5,7 +5,6 @@ import hmac
 import secrets
 import random
 
-# AES için gerekli kütüphane
 try:
     from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
     from cryptography.hazmat.backends import default_backend
@@ -67,28 +66,20 @@ class KILIM_Simulated:
     """
     def __init__(self, master_key):
         self.master_key = master_key
-        # 256 ASCII + 13 Türkçe Karakter
-        self.turkish_chars = "ÇĞİÖŞÜçğıöşüi" # Ekstra karakterler
+        self.turkish_chars = "ÇĞİÖŞÜçğıöşüi"
         self.N = 256 + len(self.turkish_chars) 
         
     def encrypt(self, text_data):
-        # 1. HMAC ile Seed Üretimi (Cost: O(1))
         iv = secrets.token_bytes(4)
         seed = hmac.new(self.master_key, iv, hashlib.sha256).digest()
         
-        # 2. Tablo Permütasyonu (Cost: O(N)) - Fisher-Yates Simulation
-        # Performans testi için random.shuffle kullanıyoruz (benzer maliyet)
         table = list(range(self.N))
         random.seed(seed)
         random.shuffle(table)
         
-        # 3. Dynamic Index Chaining (Cost: O(n))
         encrypted_indices = []
         prev_index = int.from_bytes(iv, 'big') % self.N
         
-        # Veriyi byte array gibi simüle ediyoruz (indexleme hızı için)
-        # Gerçekte text -> index map yapılır, burada hız testi için direct range kullanacağız
-        # 1MB text verisi integer array olarak:
         data_indices = [b % self.N for b in text_data] 
         
         for idx in data_indices:
@@ -114,7 +105,6 @@ def run_benchmark():
 
     # 1. Generate 1 MB Random Data
     dummy_data_bytes = os.urandom(1024 * 1024) # 1 MB Bytes
-    # KILIM is text based usually, but we simulate byte processing speed
     
     # Keys
     key_32 = os.urandom(32) # 256 bit key

@@ -7,7 +7,6 @@ import secrets
 import random
 import statistics
 
-# Bellek ölçümü (Varsa kullanılır, yoksa hata vermez)
 try:
     import tracemalloc
     TRACEMALLOC_AVAILABLE = True
@@ -15,26 +14,22 @@ except ImportError:
     TRACEMALLOC_AVAILABLE = False
 
 # ==========================================
-# KILIM ALGORİTMASI SİMÜLASYONU
+# KILIM ALGORITHM
 # ==========================================
 class KILIM_Simulated:
     def __init__(self, master_key):
         self.master_key = master_key
         self.N = 269 
-        # Tabloyu bellekte tutma simülasyonu
         self.table_enc = list(range(self.N))
         self.table_dec = list(range(self.N))
 
     def encrypt_text(self, text_data):
-        # 1. HMAC & Tablo Kurulumu
         iv = secrets.token_bytes(4)
         seed = hmac.new(self.master_key, iv, hashlib.sha256).digest()
         
-        # Tablo karıştırma (Fisher-Yates)
         random.seed(seed)
         random.shuffle(self.table_enc)
         
-        # 2. Şifreleme Döngüsü
         prev_index = int.from_bytes(iv, 'big') % self.N
         encrypted_indices = []
         
@@ -48,18 +43,15 @@ class KILIM_Simulated:
         return encrypted_indices
 
     def decrypt_text(self, encrypted_indices):
-        # 1. Kurulum
         iv = secrets.token_bytes(4)
         seed = hmac.new(self.master_key, iv, hashlib.sha256).digest()
         random.seed(seed)
         random.shuffle(self.table_dec)
         
-        # 2. Çözme Döngüsü
         prev_index = int.from_bytes(iv, 'big') % self.N
         decrypted_indices = []
         
         for cipher_val in encrypted_indices:
-            # Ters işlem simülasyonu
             try:
                 current_dynamic_index = self.table_dec.index(cipher_val)
             except ValueError:
@@ -72,10 +64,9 @@ class KILIM_Simulated:
         return decrypted_indices
 
 # ==========================================
-# TEST MOTORU
+# TEST ENGINE
 # ==========================================
 def run_table1_benchmark():
-    # Değişkenleri baştan tanımlayalım (Hata önleyici)
     avg_enc_ms = 0.0
     avg_dec_ms = 0.0
     mb_time_sec = 0.0
@@ -90,7 +81,7 @@ def run_table1_benchmark():
     cipher = KILIM_Simulated(key)
     
     # ---------------------------------------------------------
-    # TEST 1: 1 KB İşlem Hızı (Ortalama)
+    # TEST 1: 1 KB Processing Speed (Average)
     # ---------------------------------------------------------
     print("-> Test 1: 1 KB veri için hız testi yapılıyor...", end=" ", flush=True)
     kb_data = b'a' * 1024 # 1 KB
@@ -99,28 +90,25 @@ def run_table1_benchmark():
     enc_times = []
     dec_times = []
     
-    # Isınma turu
     cipher.encrypt_text(kb_data)
 
     for _ in range(iterations):
-        # Encrypt
         t1 = time.perf_counter()
         enc_res = cipher.encrypt_text(kb_data)
         t2 = time.perf_counter()
-        enc_times.append((t2 - t1) * 1000) # ms'ye çevir
+        enc_times.append((t2 - t1) * 1000)
         
-        # Decrypt
         t3 = time.perf_counter()
         cipher.decrypt_text(enc_res)
         t4 = time.perf_counter()
-        dec_times.append((t4 - t3) * 1000) # ms'ye çevir
+        dec_times.append((t4 - t3) * 1000) 
 
     avg_enc_ms = statistics.mean(enc_times)
     avg_dec_ms = statistics.mean(dec_times)
     print("TAMAMLANDI.")
     
     # ---------------------------------------------------------
-    # TEST 2: 1 MB Şifreleme Süresi
+    # TEST 2: 1 MB Encryption Time
     # ---------------------------------------------------------
     print("-> Test 2: 1 MB büyük veri testi yapılıyor...", end=" ", flush=True)
     mb_data = b'a' * 1024 * 1024 # 1 MB
@@ -131,11 +119,10 @@ def run_table1_benchmark():
     print("TAMAMLANDI.")
 
     # ---------------------------------------------------------
-    # TEST 3: Bellek Kullanımı
+    # TEST 3: Memory Usage
     # ---------------------------------------------------------
     print("-> Test 3: Bellek analizi yapılıyor...", end=" ", flush=True)
     
-    # Tablo boyutu hesaplama
     table_size_bytes = sys.getsizeof(cipher.table_enc) + sum(sys.getsizeof(i) for i in cipher.table_enc)
     table_size_kb = table_size_bytes / 1024
 
@@ -148,7 +135,7 @@ def run_table1_benchmark():
     print("TAMAMLANDI.")
 
     # ---------------------------------------------------------
-    # SONUÇ TABLOSU
+    # CONCLUSION TABLE
     # ---------------------------------------------------------
     print(f"\n{'-'*60}")
     print(f"TABLO 1 İÇİN SONUÇLAR (Kopyalayabilirsiniz)")

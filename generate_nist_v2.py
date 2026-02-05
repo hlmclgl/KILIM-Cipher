@@ -9,24 +9,19 @@ import sys
 import traceback
 from encryption_manager import EncryptionManager 
 
-# --- AYARLAR ---
 OUTPUT_FILENAME = "nist_large_750MB.bin"
 TARGET_SIZE_MB = 750  
 MASTER_KEY = secrets.token_bytes(32)
 
-# İşçi Fonksiyonu
 def worker_generate_chunk(args):
     try:
         target_chunk_size, char_map, key, seed, task_id = args
         
-        # Her işçi farklı tohum (seed) kullansın
         random.seed(seed + task_id)
         
-        # EncryptionManager'ı başlat
         manager = EncryptionManager(key)
         
-        # Daha küçük parçalar halinde şifrele (Hız ve bellek optimizasyonu)
-        # 10 KB şifrelemek çok hızlıdır, takılmayı önler.
+        
         internal_batch_size = 10000 
         base_chars = string.ascii_letters + string.digits + string.punctuation
         
@@ -34,22 +29,17 @@ def worker_generate_chunk(args):
         bit_buffer = 0
         bits_in_buffer = 0
         
-        # Hedef boyuta (target_chunk_size) ulaşana kadar döngü
         while len(byte_chunk) < target_chunk_size:
-            # Rastgele girdi
             dummy_text = "".join(random.choices(base_chars, k=internal_batch_size))
             
-            # Şifrele
             cipher_text = manager.encrypt(dummy_text)
             
-            # Bit Packing İşlemi
             for char in cipher_text:
                 if char not in char_map:
                     continue
                 
                 val = char_map[char]
                 
-                # 0-127 Aralığı (7-bit)
                 if val < 128:
                     bit_buffer = (bit_buffer << 7) | val
                     bits_in_buffer += 7
@@ -59,14 +49,12 @@ def worker_generate_chunk(args):
                         byte_val = (bit_buffer >> bits_in_buffer) & 0xFF
                         byte_chunk.append(byte_val)
                         
-                        # Yeterince veri topladık mı?
                         if len(byte_chunk) >= target_chunk_size:
                             return byte_chunk
         
         return byte_chunk
 
     except Exception as e:
-        # Hata olursa sessiz kalma, yazdır!
         return f"ERROR: {str(e)} | {traceback.format_exc()}"
 
 def generate_safe_random_text(length):
@@ -75,7 +63,6 @@ def generate_safe_random_text(length):
     return "".join(random.choices(base_chars + turkish_chars, k=length))
 
 def main():
-    # Windows için freeze_support şart
     multiprocessing.freeze_support()
 
     print("=" * 60)
@@ -83,7 +70,6 @@ def main():
     print(f"İşlemci Çekirdek Sayısı: {multiprocessing.cpu_count()}")
     print("=" * 60)
     
-    # 1. AŞAMA: KONTROL VE ANALİZ
     print("1. AŞAMA: Sistem Kontrolü ve Havuz Analizi...")
     
     manager = EncryptionManager(MASTER_KEY)
@@ -102,35 +88,27 @@ def main():
         return
     print(f"✅ Analiz Tamam: {len(unique_chars)} karakter tespit edildi.")
 
-    # 2. AŞAMA: ÜRETİM
     print("-" * 60)
     print("2. AŞAMA: Üretim Başlıyor (Hızlı Güncelleme Modu)...")
     
     start_time = time.time()
     
-    # --- DEĞİŞİKLİK BURADA ---
-    # Görev boyutunu 1 MB'dan 50 KB'a düşürdük. 
-    # Böylece işlemciler çok sık geri dönüş yapacak ve ilerleme çubuğu sürekli akacak.
+
     total_bytes_needed = TARGET_SIZE_MB * 1024 * 1024
-    chunk_size = 50 * 1024  # 50 KB (Küçük parçalar = Akıcı ilerleme)
+    chunk_size = 50 * 1024  
     num_tasks = math.ceil(total_bytes_needed / chunk_size)
     
     print(f"Toplam Görev Sayısı: {num_tasks} (Her biri {chunk_size/1024:.0f} KB)")
     
-    # Argümanları hazırla
     tasks = [(chunk_size, char_map, MASTER_KEY, i, i) for i in range(num_tasks)]
     
     total_written = 0
     
-    # Dosyayı aç
     with open(OUTPUT_FILENAME, "wb") as f:
-        # Havuzu başlat
         with multiprocessing.Pool() as pool:
             try:
-                # imap_unordered sonuç geldikçe hemen verir
                 for i, result in enumerate(pool.imap_unordered(worker_generate_chunk, tasks)):
                     
-                    # İşçiden HATA mesajı geldiyse dur
                     if isinstance(result, str) and result.startswith("ERROR"):
                         print(f"\n\n❌ İŞÇİ HATASI: {result}")
                         pool.terminate()
@@ -139,18 +117,15 @@ def main():
                     f.write(result)
                     total_written += len(result)
                     
-                    # Her 50 görevde bir (veya %1 ilerlemede) ekrana yaz
-                    # Çok sık yazmak konsolu yavaşlatır, dengeli olsun.
                     if i % 20 == 0 or total_written >= total_bytes_needed:
                         elapsed = time.time() - start_time
                         percent = (total_written / total_bytes_needed) * 100
                         
-                        # Hız hesabı (sıfıra bölme hatasını önle)
                         if elapsed < 0.1: elapsed = 0.1
                         speed = total_written / elapsed / (1024 * 1024) # MB/s
                         
                         remaining_bytes = total_bytes_needed - total_written
-                        remaining_time = remaining_bytes / (speed * 1024 * 1024 + 0.001) / 60 # Dakika
+                        remaining_time = remaining_bytes / (speed * 1024 * 1024 + 0.001) / 60 # Minute
                         
                         bar_len = 30
                         filled_len = int(bar_len * percent / 100)
